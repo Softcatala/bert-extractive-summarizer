@@ -14,12 +14,13 @@ RUN apt-get update && \
     libsm6 \
     openssl
 
+RUN mkdir -p /opt/service
+COPY requirements-service.txt /opt/service
+
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements-service.txt
 
 
-RUN mkdir -p /opt/service
-COPY requirements-service.txt /opt/service
 COPY summarizer /opt/service/summarizer
 COPY server.py /opt/service
 
