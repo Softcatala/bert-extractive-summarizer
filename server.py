@@ -11,6 +11,7 @@ import datetime
 app = Flask(__name__)
 CORS(app)
 
+_summarizer = None
 
 class Parser(object):
 
@@ -56,6 +57,8 @@ def hello_world():
 
 @app.route('/summarize_by_sentence', methods=['POST'])
 def convert_raw_text_by_sent():
+
+    global _summarizer
 #    num_sentences = int(request.args.get('num_sentences', 5))
 
     start_time = datetime.datetime.now()
@@ -70,7 +73,7 @@ def convert_raw_text_by_sent():
         abort(make_response(jsonify(message="Request must have raw text"), 400))
 
     parsed = Parser(data).convert_to_paragraphs()
-    summary = summarizer(parsed, num_sentences=num_sentences, min_length=min_length, max_length=max_length)
+    summary = _summarizer(parsed, num_sentences=num_sentences, min_length=min_length, max_length=max_length)
 
     time_used = datetime.datetime.now() - start_time
 
@@ -81,6 +84,7 @@ def convert_raw_text_by_sent():
 
 
 def init():
+    global _summarizer
 
     model = 'bert-base-uncased'
     transformer_type = None
@@ -93,7 +97,7 @@ def init():
         print(f"Using Model: {transformer_type}")
         assert transformer_key is not None, 'Transformer Key cannot be none with the transformer type'
 
-        summarizer = TransformerSummarizer(
+        _summarizer = TransformerSummarizer(
             transformer_type=transformer_type,
             transformer_model_key=transformer_key,
             hidden=int(hidden),
@@ -103,7 +107,7 @@ def init():
     else:
         print(f"Using Model: {model}")
 
-        summarizer = Summarizer(
+        _summarizer = Summarizer(
             model=model,
             hidden=int(hidden),
             reduce_option=reduce
