@@ -51,7 +51,7 @@ class Parser(object):
         sentences: List[str] = self.run()
         return ' '.join([sentence.strip() for sentence in sentences]).strip()
 
-@app.route('/', methods=['GET'])
+@app.route('/hello', methods=['GET'])
 def hello_world():
     return 'Servei actiu!'
 
@@ -92,8 +92,8 @@ if __name__ == '__main__':
     parser.add_argument('-greediness', dest='greediness', help='', default=0.45)
     parser.add_argument('-reduce', dest='reduce', help='', default='mean')
     parser.add_argument('-hidden', dest='hidden', help='', default=-2)
-    parser.add_argument('-port', dest='port', help='', default=8080)
-#    parser.add_argument('-host', dest='host', help='', default='0.0.0.0')
+    ##parser.add_argument('-port', dest='port', help='', default=8080)
+    ##parser.add_argument('-host', dest='host', help='', default='0.0.0.0')
 
     args = parser.parse_args()
 
@@ -117,5 +117,10 @@ if __name__ == '__main__':
             reduce_option=args.reduce
         )
 
-    app.run(port=int(args.port))
+    #app.run(port=int(args.port))
     #app.run(host=args.host, port=int(args.port))
+
+if __name__ == '__main__':
+    app.run()
+
+
