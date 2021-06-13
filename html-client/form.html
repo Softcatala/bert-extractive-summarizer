@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+        <script type="text/javascript" src="summarization.js"></script>
+    </head>
+
+<body>
+
+    <form><p>Text</p> 
+            <textarea id="source_text" name="source_text" cols="100" rows="20"></textarea>
+            <span>
+                <p>Nombre de frases: <input type="number" id="num_sentences" name="num_sentences" min="3" value="5"></p>
+            </span>
+            <p><input id="send_button" type="submit" onclick="summarize_text();return false;"></p>
+    </form>
+    <p>Resum:</p> 
+    <textarea readonly id="translated_text" name="translated_text" cols="100" rows="20"></textarea>
+    <p>Temps: <span id="time_used"></span></p>
+</body>
+</html>
+
+
