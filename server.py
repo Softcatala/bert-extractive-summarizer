@@ -7,7 +7,7 @@ from nltk import tokenize
 from typing import List
 import argparse
 from summarizer import Summarizer, TransformerSummarizer
-
+import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -57,11 +57,15 @@ def hello_world():
 
 @app.route('/summarize_by_sentence', methods=['POST'])
 def convert_raw_text_by_sent():
-    num_sentences = int(request.args.get('num_sentences', 5))
+#    num_sentences = int(request.args.get('num_sentences', 5))
+
+    start_time = datetime.datetime.now()
+
     min_length = int(request.args.get('min_length', 25))
     max_length = int(request.args.get('max_length', 500))
 
     data = request.form['text']
+    num_sentences = int(request.form.get('num_sentences', 5))
 
     if not data:
         abort(make_response(jsonify(message="Request must have raw text"), 400))
@@ -69,8 +73,11 @@ def convert_raw_text_by_sent():
     parsed = Parser(data).convert_to_paragraphs()
     summary = summarizer(parsed, num_sentences=num_sentences, min_length=min_length, max_length=max_length)
 
+    time_used = datetime.datetime.now() - start_time
+
     return jsonify({
-        'summary': summary
+        'summary': summary,
+        'time' : str(time_used)
     })
 
 
@@ -86,7 +93,7 @@ if __name__ == '__main__':
     parser.add_argument('-reduce', dest='reduce', help='', default='mean')
     parser.add_argument('-hidden', dest='hidden', help='', default=-2)
     parser.add_argument('-port', dest='port', help='', default=8080)
-    parser.add_argument('-host', dest='host', help='', default='0.0.0.0')
+#    parser.add_argument('-host', dest='host', help='', default='0.0.0.0')
 
     args = parser.parse_args()
 
@@ -110,4 +117,5 @@ if __name__ == '__main__':
             reduce_option=args.reduce
         )
 
-    app.run(host=args.host, port=int(args.port))
+    app.run(port=int(args.port))
+    #app.run(host=args.host, port=int(args.port))
