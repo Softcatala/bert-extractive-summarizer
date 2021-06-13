@@ -2,7 +2,6 @@ from flask import Flask
 from flask import request, jsonify, abort, make_response
 from flask_cors import CORS
 import nltk
-nltk.download('punkt')
 from nltk import tokenize
 from typing import List
 import argparse
@@ -81,7 +80,7 @@ def convert_raw_text_by_sent():
     })
 
 
-if __name__ == '__main__':
+def init():
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('-model', dest='model', default='bert-base-uncased', help='The model to use')
     parser.add_argument('-transformer-type',
@@ -96,6 +95,9 @@ if __name__ == '__main__':
     ##parser.add_argument('-host', dest='host', help='', default='0.0.0.0')
 
     args = parser.parse_args()
+    
+#    nltk.download('punkt')
+
 
     if args.transformer_type is not None:
         print(f"Using Model: {args.transformer_type}")
@@ -120,7 +122,13 @@ if __name__ == '__main__':
     #app.run(port=int(args.port))
     #app.run(host=args.host, port=int(args.port))
 
+
+
 if __name__ == '__main__':
+#    app.debug = True
+    init()
     app.run()
 
+if __name__ != '__main__':
+    init()
 

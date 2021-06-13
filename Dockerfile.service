@@ -21,7 +21,11 @@ RUN pip3 install --upgrade pip
 RUN pip3 install -r /opt/service/requirements-service.txt
 
 
+COPY docker/entry-point.sh /opt/service/entry-point.sh
 COPY summarizer /opt/service/summarizer
 COPY server.py /opt/service
+COPY init.py /opt/service
 
-ENTRYPOINT /opt/service/entry-point.sh
+WORKDIR  /opt/service
+#ENTRYPOINT /opt/service/entry-point.sh
+ENTRYPOINT bash

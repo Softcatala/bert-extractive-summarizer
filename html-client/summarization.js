@@ -1,6 +1,5 @@
-
-// https://www.softcatala.org/
-var URL='http://172.17.0.2:8080'
+// https://api.softcatala.org/summarization-service/v1/
+var URL='http://localhost:8900'
 
 function summarize_text() {
 
