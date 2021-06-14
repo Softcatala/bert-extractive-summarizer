@@ -11,7 +11,7 @@ import datetime
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('-model', dest='model', default='bert-base-uncased', help='The model to use')
+    parser.add_argument('-model', dest='model', default='distilbert-base-uncased', help='The model to use')
     parser.add_argument('-transformer-type',
                         dest='transformer_type', default=None,
                         help='Huggingface transformer class key')

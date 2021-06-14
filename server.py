@@ -86,7 +86,7 @@ def convert_raw_text_by_sent():
 def init():
     global _summarizer
 
-    model = 'bert-base-uncased'
+    model = 'distilbert-base-uncased'
     transformer_type = None
     transformer_key = None
     greediness = 0.45
