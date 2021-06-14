@@ -79,9 +79,16 @@ def convert_raw_text_by_sent():
     data = request.form['text']
     num_sentences = int(request.form.get('num_sentences', 5))
 
+    data_len = len(data)
+    if data_len > 64000:
+        return jsonify({
+            'summary': 'El text és massa larg pel nostre maquinari per resumir-ho',
+            'time' : str(datetime.datetime.now() - start_time)
+        })
+
     if _is_catalan_language(data) == False:
         return jsonify({
-            'summary': 'El text no està en català.',
+            'summary': 'Cal que el text sigui en català.',
             'time' : str(datetime.datetime.now() - start_time)
         })
 
