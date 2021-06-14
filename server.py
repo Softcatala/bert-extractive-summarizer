@@ -7,6 +7,8 @@ from typing import List
 import argparse
 from summarizer import Summarizer, TransformerSummarizer
 import datetime
+import torch
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -53,7 +55,8 @@ class Parser(object):
 
 @app.route('/hello', methods=['GET'])
 def hello_world():
-    return 'Servei actiu!'
+    threads = torch.get_num_threads()
+    return f'Servei actiu! Fils {threads}'
 
 @app.route('/summarize_by_sentence', methods=['POST'])
 def convert_raw_text_by_sent():
@@ -93,6 +96,11 @@ def init():
     reduce = 'mean'
     hidden = -2
 
+    if 'THREADS' in os.environ:
+        print("Set threads!")
+        num_threads = int(os.environ['THREADS'])
+        torch.set_num_threads(num_threads)
+
     if transformer_type is not None:
         print(f"Using Model: {transformer_type}")
         assert transformer_key is not None, 'Transformer Key cannot be none with the transformer type'
@@ -107,12 +115,15 @@ def init():
     else:
         print(f"Using Model: {model}")
 
+
         _summarizer = Summarizer(
             model=model,
             hidden=int(hidden),
             reduce_option=reduce
         )
 
+    threads = torch.get_num_threads()
+    print(f"threads: {threads}")
     #app.run(port=int(args.port))
     #app.run(host=args.host, port=int(args.port))
 
