@@ -9,6 +9,8 @@ from summarizer import Summarizer, TransformerSummarizer
 import datetime
 import torch
 import os
+from langdetect import detect, DetectorFactory
+
 
 app = Flask(__name__)
 CORS(app)
@@ -58,11 +60,16 @@ def hello_world():
     threads = torch.get_num_threads()
     return f'Servei actiu! Fils {threads}'
 
+def _is_catalan_language(text):
+    lang = detect(text)
+    print(f"lang: {lang}")
+    return lang == 'ca'
+
+
 @app.route('/summarize_by_sentence', methods=['POST'])
 def convert_raw_text_by_sent():
 
     global _summarizer
-#    num_sentences = int(request.args.get('num_sentences', 5))
 
     start_time = datetime.datetime.now()
 
@@ -72,17 +79,21 @@ def convert_raw_text_by_sent():
     data = request.form['text']
     num_sentences = int(request.form.get('num_sentences', 5))
 
+    if _is_catalan_language(data) == False:
+        return jsonify({
+            'summary': 'El text no està en català.',
+            'time' : str(datetime.datetime.now() - start_time)
+        })
+
     if not data:
         abort(make_response(jsonify(message="Request must have raw text"), 400))
 
     parsed = Parser(data).convert_to_paragraphs()
     summary = _summarizer(parsed, num_sentences=num_sentences, min_length=min_length, max_length=max_length)
 
-    time_used = datetime.datetime.now() - start_time
-
     return jsonify({
         'summary': summary,
-        'time' : str(time_used)
+        'time' : str(datetime.datetime.now() - start_time)
     })
 
 
