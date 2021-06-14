@@ -82,7 +82,7 @@ def convert_raw_text_by_sent():
     data_len = len(data)
     if data_len > 64000:
         return jsonify({
-            'summary': 'El text és massa larg pel nostre maquinari per resumir-ho',
+            'summary': 'El text és massa larg pel nostre maquinari per poder-lo resumir',
             'time' : str(datetime.datetime.now() - start_time)
         })
 
