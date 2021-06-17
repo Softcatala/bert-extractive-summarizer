@@ -57,7 +57,7 @@ class Usage(object):
 
     def _get_line_components(self, line):
         components = line.strip().split("\t")
-        return components[0], components[1], components[2], components[3], components[4]
+        return components[0], components[1], components[2]
 
     def _init_stats_dict(self, dictionary):
         dictionary["words"] = 0
@@ -65,9 +65,11 @@ class Usage(object):
         return dictionary
 
     def get_stats(self, date_requested):
-        results = {}
+        stats = {}
         try:
-            stats = {}
+            stats["words"] = 0
+            stats["time_used"] = 0
+            stats["calls"] = 0
             with open(self.FILE, "r") as file_in:
                 for line in file_in:
                     date_component, words_component, time_component = self._get_line_components(line)
@@ -77,12 +79,13 @@ class Usage(object):
                     if line_datetime.date() == date_requested.date():
                         stats["words"] = stats["words"] + int(words_component)
                         stats["time_used"] = stats["time_used"] + float(time_component)
+                        stats["calls"] = stats["calls"] + 1
 
         except Exception as exception:
             logging.error("get_stats. Error:" + str(exception))
             pass
 
-        return results
+        return stats
 
     def _read_first_line(self):
         try:

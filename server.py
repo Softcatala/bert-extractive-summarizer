@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request, jsonify, abort, make_response
+from flask import request, jsonify, abort, make_response, Response
 from flask_cors import CORS
 from nltk import tokenize
 from typing import List
@@ -10,7 +10,7 @@ import torch
 import os
 from langdetect import detect
 from usage import Usage
-
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -64,6 +64,22 @@ def _is_catalan_language(text):
     lang = detect(text)
     print(f"lang: {lang}")
     return lang == 'ca'
+
+def json_answer(data, status = 200):
+    json_data = json.dumps(data, indent=4, separators=(',', ': '))
+    resp = Response(json_data, mimetype='application/json', status = status)
+    resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
+@app.route('/stats/', methods=['GET'])
+def stats():
+    requested = request.args.get('date')
+    date_requested = datetime.datetime.strptime(requested, '%Y-%m-%d')
+    usage = Usage()
+    result = usage.get_stats(date_requested)
+
+    return json_answer(result)
+
 
 
 @app.route('/summarize_by_sentence', methods=['POST'])
