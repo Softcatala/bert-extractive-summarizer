@@ -43,7 +43,7 @@ class Usage(object):
     def get_date_from_line(self, line):
          return line.split("\t", 1)[0]
 
-    def log(self, model_name, words, time_used, _type):
+    def log(self, words, time_used):
         try:
             with open(self.FILE, "a+") as file_out:
                 current_time = self._get_time_now().strftime('%Y-%m-%d %H:%M:%S')
