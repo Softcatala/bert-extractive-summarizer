@@ -1,7 +1,6 @@
 from flask import Flask
 from flask import request, jsonify, abort, make_response
 from flask_cors import CORS
-import nltk
 from nltk import tokenize
 from typing import List
 import argparse
@@ -9,7 +8,8 @@ from summarizer import Summarizer, TransformerSummarizer
 import datetime
 import torch
 import os
-from langdetect import detect, DetectorFactory
+from langdetect import detect
+from usage import Usage
 
 
 app = Flask(__name__)
@@ -97,6 +97,11 @@ def convert_raw_text_by_sent():
 
     parsed = Parser(data).convert_to_paragraphs()
     summary = _summarizer(parsed, num_sentences=num_sentences, min_length=min_length, max_length=max_length)
+
+    time_used = datetime.datetime.now() - start_time
+    words = len(data.split(' '))
+    usage = Usage()
+    usage.log(words, time_used)
 
     return jsonify({
         'summary': summary,
