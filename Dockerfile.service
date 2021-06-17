@@ -30,5 +30,4 @@ COPY init.py /opt/service
 COPY usage.py /opt/service
 
 WORKDIR  /opt/service
-#ENTRYPOINT /opt/service/entry-point.sh
-ENTRYPOINT bash
+ENTRYPOINT /opt/service/entry-point.sh
