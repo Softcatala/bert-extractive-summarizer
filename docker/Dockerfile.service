@@ -26,7 +26,6 @@ COPY langdata/torch/ /root/.cache/torch/
 COPY docker/entry-point.sh /opt/service/entry-point.sh
 COPY summarizer /opt/service/summarizer
 COPY server.py /opt/service
-COPY init.py /opt/service
 COPY usage.py /opt/service
 
 WORKDIR  /opt/service
