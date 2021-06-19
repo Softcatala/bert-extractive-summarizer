@@ -11,11 +11,31 @@ import os
 from langdetect import detect
 from usage import Usage
 import json
+import logging
+import logging.handlers
+
 
 app = Flask(__name__)
 CORS(app)
 
 _summarizer = None
+
+def init_logging():
+    logfile = 'summarizer-service.log'
+
+    LOGLEVEL = os.environ.get('LOGLEVEL', 'DEBUG').upper()
+#    LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
+    logger = logging.getLogger()
+    hdlr = logging.handlers.RotatingFileHandler(logfile, maxBytes=1024*1024, backupCount=1)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    hdlr.setFormatter(formatter)
+    logger.addHandler(hdlr)
+    logger.setLevel(LOGLEVEL)
+
+    console = logging.StreamHandler()
+    console.setLevel(LOGLEVEL)
+    logger.addHandler(console)
+
 
 class Parser(object):
 
@@ -167,11 +187,12 @@ def init():
     #app.run(host=args.host, port=int(args.port))
 
 
+
 if __name__ == '__main__':
 #    app.debug = True
+    init_logging()
     init()
-    app.run()
 
 if __name__ != '__main__':
+    init_logging()
     init()
-

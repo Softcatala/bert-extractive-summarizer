@@ -1,6 +1,7 @@
 from typing import List
 
 from spacy.lang.en import English
+import logging
 
 
 class SentenceHandler(object):
@@ -40,6 +41,9 @@ class SentenceHandler(object):
                     to_return.append(c.text.strip())
                 else:
                     to_return.append(c.string.strip())
+
+        logging.debug(f"SentenceHandler. sentence_processor. doc: '{doc}', returns {to_return}")
+        logging.debug(f"SentenceHandler. sentence_processor. doc: '{len(doc)}', returns len {len(to_return)}")
 
         return to_return
 
