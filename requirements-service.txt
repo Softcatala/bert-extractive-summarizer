@@ -4,10 +4,8 @@ spacy==2.3.0
 transformers==2.2.2
 Cython==0.29.10
 tqdm==4.38
-neuralcoref==4.0
 argparse
 scikit-learn
-bert-extractive-summarizer
 Flask
 flask-cors
 nltk
