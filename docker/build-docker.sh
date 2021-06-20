@@ -1,1 +1,4 @@
-docker build -t bert-summarizer ../ -f Dockerfile.service
+pushd ..
+python3 -m pytest
+docker build -t bert-summarizer . -f docker/Dockerfile.service
+popd
