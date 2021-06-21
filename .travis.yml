@@ -1,12 +1,10 @@
-sudo: required
+language: python
+python:
+  - "3.9"
+before_install:
+  - sudo apt-get update
+install:
+  - pip install -r requirements-service.txt
+script: 
+  - pytest
 
-language: minimal
-
-services:
-  - docker
-
-install :
-  - docker build -t local-test .
-
-script:
-  - docker run --rm local-test:latest bash -i -c "pytest"
