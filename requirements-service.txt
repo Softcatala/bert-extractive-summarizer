@@ -2,7 +2,6 @@ numpy
 torch==1.8
 spacy
 transformers==2.2.2
-Cython
 tqdm==4.38
 scikit-learn
 Flask
