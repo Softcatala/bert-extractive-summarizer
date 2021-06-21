@@ -1,9 +1,6 @@
 from flask import Flask
 from flask import request, jsonify, abort, make_response, Response
 from flask_cors import CORS
-from nltk import tokenize
-from typing import List
-import argparse
 from summarizer import Summarizer, TransformerSummarizer
 import datetime
 import torch
@@ -13,6 +10,7 @@ from usage import Usage
 import json
 import logging
 import logging.handlers
+from parser import Parser
 
 
 app = Flask(__name__)
@@ -23,8 +21,7 @@ _summarizer = None
 def init_logging():
     logfile = 'summarizer-service.log'
 
-    LOGLEVEL = os.environ.get('LOGLEVEL', 'DEBUG').upper()
-#    LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
+    LOGLEVEL = os.environ.get('LOGLEVEL', 'INFO').upper()
     logger = logging.getLogger()
     hdlr = logging.handlers.RotatingFileHandler(logfile, maxBytes=1024*1024, backupCount=1)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
@@ -37,43 +34,9 @@ def init_logging():
     logger.addHandler(console)
 
 
-class Parser(object):
 
-    def __init__(self, raw_text: bytes):
-        self.all_data = raw_text.split('\n')
 
-    def __isint(self, v) -> bool:
-        try:
-            int(v)
-            return True
-        except:
-            return False
 
-    def __should_skip(self, v) -> bool:
-        return self.__isint(v) or v == '\n' or '-->' in v
-
-    def __process_sentences(self, v) -> List[str]:
-        sentence = tokenize.sent_tokenize(v)
-        return sentence
-
-    def save_data(self, save_path, sentences) -> None:
-        with open(save_path, 'w') as f:
-            for sentence in sentences:
-                f.write("%s\n" % sentence)
-
-    def run(self) -> List[str]:
-        total: str = ''
-        for data in self.all_data:
-            if not self.__should_skip(data):
-                cleaned = data.replace('&gt;', '').replace('\n', '').strip()
-                if cleaned:
-                    total += ' ' + cleaned
-        sentences = self.__process_sentences(total)
-        return sentences
-
-    def convert_to_paragraphs(self) -> str:
-        sentences: List[str] = self.run()
-        return ' '.join([sentence.strip() for sentence in sentences]).strip()
 
 @app.route('/hello', methods=['GET'])
 def hello_world():
@@ -183,9 +146,6 @@ def init():
 
     threads = torch.get_num_threads()
     print(f"threads: {threads}")
-    #app.run(port=int(args.port))
-    #app.run(host=args.host, port=int(args.port))
-
 
 
 if __name__ == '__main__':

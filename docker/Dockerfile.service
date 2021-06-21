@@ -21,11 +21,11 @@ RUN pip3 install --upgrade pip
 RUN pip3 install -r /opt/service/requirements-service.txt
 
 
-COPY langdata/nltk_data/ /root/nltk_data/
 COPY langdata/torch/ /root/.cache/torch/
 COPY docker/entry-point.sh /opt/service/entry-point.sh
 COPY summarizer /opt/service/summarizer
 COPY server.py /opt/service
+COPY parser.py /opt/service
 COPY usage.py /opt/service
 
 WORKDIR  /opt/service
