@@ -19,7 +19,8 @@ class BertParent(object):
         'xlm-mlm-enfr-1024': (XLMModel, XLMTokenizer),
         'distilbert-base-uncased': (DistilBertModel, DistilBertTokenizer),
         'albert-base-v1': (AlbertModel, AlbertTokenizer),
-        'albert-large-v1': (AlbertModel, AlbertTokenizer)
+        'albert-large-v1': (AlbertModel, AlbertTokenizer),
+        'bsc/roberta-base-ca-cased': (RobertaModel, RobertaTokenizer)
     }
 
     def __init__(
