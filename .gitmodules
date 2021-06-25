@@ -1,0 +1,3 @@
+[submodule "evaluation/MLSUM-Catalan"]
+	path = evaluation/MLSUM-Catalan
+	url = https://github.com/Softcatala/MLSUM-Catalan
