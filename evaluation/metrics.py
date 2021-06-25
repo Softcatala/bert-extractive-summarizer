@@ -27,7 +27,7 @@ def main():
    ## print("Calculates metrics")
 
 #    for cnt in range(0, 20):
-    with open(f"summary.ca", "r") as fh_ref, open(f"hypos.ca", "r") as fh_hyp:
+    with open(f"split/summary.ca", "r") as fh_ref, open(f"hypo/hypos.ca", "r") as fh_hyp:
         refs = fh_ref.readlines()
         hyps = fh_hyp.readlines()
 

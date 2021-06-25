@@ -23,7 +23,7 @@ import datetime
 
 def read_lines():
 
-    with open("ca_train.txt", "r") as fh:
+    with open("MLSUM-Catalan/data/processed/ca_train.txt", "r") as fh:
         return fh.readlines()
                   
 def main():
@@ -31,9 +31,17 @@ def main():
     print("Reads MLSUM input and spits text and summary, calculates hypotesis")
     print("and saves in a single file to run later metrics")
 
+    HYPO_DIR = 'hypo'
+    SPLIT_DIR = 'split'
 
     hypos = []
     refs = []
+
+    if not os.path.exists(f'{HYPO_DIR}'):
+        os.makedirs(f'{HYPO_DIR}')
+
+    if not os.path.exists(f'{SPLIT_DIR}'):
+        os.makedirs(f'{SPLIT_DIR}')
 
     lines = read_lines()
     cnt = 0
@@ -47,15 +55,17 @@ def main():
         text = fields[2]
         summary = fields[3]
 
-        text_fn = f"data/text-{cnt}.ca"
-        with open(text_fn, "w") as text_fh, open(f"data/summary-{cnt}.ca", "w") as summary_fh:
+        text_fn = f"{SPLIT_DIR}/text-{cnt}.ca"
+        summary_fn = f"{SPLIT_DIR}/summary-{cnt}.ca" 
+        hypo_fn = f"{HYPO_DIR}/summary-{cnt}.ca"
+        with open(text_fn, "w") as text_fh, open(summary_fn, "w") as summary_fh:
             text_fh.write(text)
             summary_fh.write(summary)
 
-        cmd = f'python3 ../summarize.py -path {text_fn} > hypo/summary-{cnt}.ca'
+        cmd = f'python3 ../summarize.py -path {text_fn} > {hypo_fn}'
         os.system(cmd)
 
-        with open(f"hypo/summary-{cnt}.ca", "r") as fh:
+        with open(hypo_fn, "r") as fh:
             hyp = fh.read()
 
         refs.append(summary)
@@ -66,14 +76,14 @@ def main():
         if cnt % 10 == 0:
             print(f"Processing: {cnt}")
 
-        if cnt == 50:
+        if cnt == 2:
             break
 
-    with open("summary.ca", "w") as fh:
+    with open(f"{SPLIT_DIR}/summary.ca", "w") as fh:
         for ref in refs:
             fh.write(ref + "\n")
 
-    with open("hypos.ca", "w") as fh:
+    with open(f"{HYPO_DIR}/hypos.ca", "w") as fh:
         for hyp in hypos:
             fh.write(hyp)
 
