@@ -19,9 +19,22 @@
 
 import fnmatch
 import os
+import re
+from functools import cmp_to_key
+
+def num_comp(a, b):
+    num_a = int(re.findall(r'\d+', a)[0])
+    num_b = int(re.findall(r'\d+', b)[0])
+    if num_a > num_b:
+        return 1
+    elif num_a == num_b:
+        return 0
+    else:
+        return -1
 
 
 class FindFiles(object):
+
 
     def find(self, directory, pattern):
         filelist = []
@@ -32,29 +45,6 @@ class FindFiles(object):
                     filename = os.path.join(root, basename)
                     filelist.append(filename)
 
-        filelist.sort()
+        cmp_items_py = cmp_to_key(num_comp)
+        filelist.sort(key=cmp_items_py)
         return filelist
-
-    def find_recursive(self, directory, pattern):
-        filelist_set = set()
-        dirs = self.find_dirs(directory, "*")
-        for _dir in dirs:
-            files = self.find(_dir, pattern)
-            for f in files:
-                filelist_set.add(f)
-
-        filelist = list(filelist_set)
-        filelist.sort()
-        return filelist
-
-    def find_dirs(self, directory, pattern):
-        dirlist = []
-
-        for root, dirs, files in os.walk(directory):
-            for basename in dirs:
-                if fnmatch.fnmatch(basename, pattern):
-                    filename = os.path.join(root, basename)
-                    dirlist.append(filename)
-
-        dirlist.sort()
-        return dirlist
