@@ -57,6 +57,7 @@ def main():
             text_fh.write(text)
             summary_fh.write(summary)
 
+        cnt = cnt + 1
         refs.append(summary)
 
         if cnt == 50:
