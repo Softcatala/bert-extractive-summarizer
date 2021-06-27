@@ -11,8 +11,8 @@ def run():
 #    parser.add_argument('-greedyness', dest='greedyness', help='Greedyness of the NeuralCoref model', default=0.45)
     args = parser.parse_args()
 
-    args.model = 'bert-base-uncased'
-#    args.model = 'distilbert-base-uncased'
+#    args.model = 'bert-base-uncased'
+    args.model = 'distilbert-base-uncased'
 #    args.model = 'bsc/roberta-base-ca-cased'
 
     transformer_type = None
