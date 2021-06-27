@@ -43,10 +43,9 @@ def main():
     for filename in findFiles.find("split/", 'text*.ca'):
         num = re.findall(r'\d+', filename)[0]
 
-        text_fn = f"hypo/summary-{num}.ca"  
         hypo_fn = f"{HYPO_DIR}/summary-{num}.ca"
         
-        cmd = f'python3 ../summarize.py -path {text_fn} > {hypo_fn}'
+        cmd = f'python3 ../summarize.py -path {filename} > {hypo_fn}'
         print(cmd)
         os.system(cmd)
 
