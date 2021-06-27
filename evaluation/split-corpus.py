@@ -20,6 +20,7 @@
 
 import os
 import datetime
+import shutil
 
 def read_lines():
 
@@ -37,11 +38,15 @@ def main():
     hypos = []
     refs = []
 
-    if not os.path.exists(f'{HYPO_DIR}'):
-        os.makedirs(f'{HYPO_DIR}')
+    if os.path.exists(f'{HYPO_DIR}'):
+        shutil.rmtree(f'{HYPO_DIR}')
 
-    if not os.path.exists(f'{SPLIT_DIR}'):
-        os.makedirs(f'{SPLIT_DIR}')
+    os.makedirs(f'{HYPO_DIR}')
+
+    if os.path.exists(f'{SPLIT_DIR}'):
+        shutil.rmtree(f'{SPLIT_DIR}')
+
+    os.makedirs(f'{SPLIT_DIR}')
 
     lines = read_lines()
     cnt = 0
