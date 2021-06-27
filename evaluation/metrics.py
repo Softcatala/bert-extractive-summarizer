@@ -26,17 +26,11 @@ def main():
 
    ## print("Calculates metrics")
 
-#    for cnt in range(0, 20):
     with open(f"split/summary.ca", "r") as fh_ref, open(f"hypo/hypos.ca", "r") as fh_hyp:
         refs = fh_ref.readlines()
         hyps = fh_hyp.readlines()
 
         rouge = Rouge()
-        #scores = rouge.get_scores(hyps, refs)
-        #print(scores)
-        # or
-
-        #hyps, refs = map(list, zip(*[[d['hyp'], d['ref']] for d in data]))            
         scores = rouge.get_scores(hyps, refs, avg=True)
         formatted_scores = json.dumps(scores, indent=4)
     
