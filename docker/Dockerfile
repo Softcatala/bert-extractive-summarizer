@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 RUN apt-get update && \
     apt-get install -y sudo \
@@ -16,9 +16,19 @@ RUN apt-get update && \
 
 RUN mkdir -p /opt/service
 COPY requirements.txt /opt/service
-COPY summarizer /opt/service/summarizer
-COPY tests /opt/service/tests
-WORKDIR /opt/service
 
 RUN pip3 install --upgrade pip
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r /opt/service/requirements.txt
+
+
+COPY langdata/torch/ /root/.cache/torch/
+COPY docker/entry-point.sh /opt/service/entry-point-cli.sh
+COPY summarizer /opt/service/summarizer
+COPY *.py /opt/service/
+
+COPY tests /opt/service/tests
+COPY evaluation /opt/service/evaluation
+
+
+WORKDIR  /opt/service
+ENTRYPOINT /opt/service/entry-point-cli.sh

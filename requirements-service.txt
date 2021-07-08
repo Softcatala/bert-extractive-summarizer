@@ -4,8 +4,10 @@ spacy
 transformers==2.2.2
 tqdm==4.38
 scikit-learn
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.3.0/en_core_web_sm-2.3.0.tar.gz
+
+# web
 Flask
 flask-cors
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.3.0/en_core_web_sm-2.3.0.tar.gz
 gunicorn>=20.0.4
 langdetect==1.0.9
