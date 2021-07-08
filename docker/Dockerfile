@@ -22,7 +22,7 @@ RUN pip3 install -r /opt/service/requirements.txt
 
 
 COPY langdata/torch/ /root/.cache/torch/
-COPY docker/entry-point.sh /opt/service/entry-point-cli.sh
+COPY docker/entry-point-cli.sh /opt/service/entry-point-cli.sh
 COPY summarizer /opt/service/summarizer
 COPY *.py /opt/service/
 
