@@ -7,6 +7,7 @@ scikit-learn==0.24.2
 https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.1.0/en_core_web_sm-3.1.0.tar.gz
 
 # web
+click==7.1.2 # needed by web framework
 Flask
 flask-cors
 gunicorn>=20.0.4
