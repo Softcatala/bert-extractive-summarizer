@@ -18,7 +18,7 @@ def passage():
 def test_do_not_use_first(summarizer, passage):
     res = summarizer(passage, num_sentences=3)
     
-    expected_summary = '—Els indults són bons per als presos i fatals per al moviment. Encara que un vulgui ser absolutament coherent, els condicionants són tals que la prudència seria dir “feu”, i desaparèixer. Però si em demaneu si Oriol Junqueras té dret de fer política, i tant que en té! Els partits són unes bombolles cada dia més impermeables.'
+    expected_summary = '—Els indults són bons per als presos i fatals per al moviment. Encara que un vulgui ser absolutament coherent, els condicionants són tals que la prudència seria dir “feu”, i desaparèixer. Els partits són unes bombolles cada dia més impermeables. I per una altra cosa: els partits tenen unes dinàmiques interiors, de funcionament, de lideratge, que s’acaben fent taps.'
 
     assert res == expected_summary
 

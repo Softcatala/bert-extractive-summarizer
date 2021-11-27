@@ -1,0 +1,31 @@
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - test
+  - build
+
+test:
+  stage: test
+  script:
+    - ./get-download.sh 
+    - export IMAGE_NAME=$CI_COMMIT_SHA-test
+    - export DOCKER_PATH=docker/Dockerfile
+    - docker build -f $DOCKER_PATH --tag $IMAGE_NAME .
+    - docker run $IMAGE_NAME "cd /opt/service && pytest"
+build:
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker info
+    - export DATETAG=$(date +%Y%m%d-%H%M%S)
+  stage: build
+  script:
+    - ./get-download.sh
+    - docker build -f docker/Dockerfile.service --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --tag $CI_REGISTRY_IMAGE:$DATETAG --tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:$DATETAG
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
