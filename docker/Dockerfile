@@ -19,8 +19,7 @@ COPY requirements.txt /opt/service
 
 RUN pip3 install -r /opt/service/requirements.txt
 
-
-COPY langdata/torch/ /root/.cache/torch/
+COPY models/ /opt/service/models
 COPY docker/entry-point-cli.sh /opt/service/entry-point-cli.sh
 COPY summarizer /opt/service/summarizer
 COPY *.py /opt/service/

@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from numpy import ndarray
 from transformers import *
-
+import os
 
 class BertParent(object):
 
@@ -37,6 +37,11 @@ class BertParent(object):
         base_model, base_tokenizer = self.MODELS.get(model, (None, None))
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        local_model = f"models/{model}/"
+        if os.path.exists(local_model):
+            model = local_model
+            print(f"model {local_model} exists")
 
         if custom_model:
             self.model = custom_model.to(self.device)

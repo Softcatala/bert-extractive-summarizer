@@ -1,15 +1,15 @@
 import pytest
-from transformers import AlbertTokenizer, AlbertModel
+#from transformers import AlbertTokenizer, AlbertModel
 
 from summarizer import Summarizer
 from summarizer.sentence_handler import SentenceHandler
 
 
-@pytest.fixture()
-def custom_summarizer():
-    albert_model = AlbertModel.from_pretrained('albert-base-v2', output_hidden_states=True)
-    albert_tokenizer = AlbertTokenizer.from_pretrained('albert-base-v2')
-    return Summarizer(custom_model=albert_model, custom_tokenizer=albert_tokenizer)
+#@pytest.fixture()
+#def custom_summarizer():
+#    albert_model = AlbertModel.from_pretrained('albert-base-v2', output_hidden_states=True)
+#    albert_tokenizer = AlbertTokenizer.from_pretrained('albert-base-v2')
+#    return Summarizer(custom_model=albert_model, custom_tokenizer=albert_tokenizer)
 
 
 @pytest.fixture()
@@ -103,9 +103,9 @@ def test_do_not_use_first(summarizer, passage):
     assert res is not None
 
 
-def test_albert(custom_summarizer, passage):
-    res = custom_summarizer(passage)
-    assert len(res) > 10
+#def test_albert(custom_summarizer, passage):
+#    res = custom_summarizer(passage)
+#    assert len(res) > 10
 
 
 def test_num_sentences(summarizer, passage):
